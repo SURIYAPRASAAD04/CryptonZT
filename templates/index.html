@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptonZT | Quantum-Resistant Security</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f63458;
+            --primary-dark: #e42527;
+            --accent: #ff4366;
+            --bg: #0f0f12;
+            --bg-light: #1a1a1f;
+            --text: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --glass-bg: rgba(30, 30, 35, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(246, 52, 88, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(100, 100, 255, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism base styles */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+        }
+
+        .glass:hover {
+            background: rgba(40, 40, 45, 0.7);
+            border-color: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            background: rgba(15, 15, 18, 0.8);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            padding: 12px 5%;
+            background: rgba(15, 15, 18, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.4rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .active {
+            color: var(--text) !important;
+            background: rgba(246, 52, 88, 0.1) !important;
+        }
+
+        .active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(246, 52, 88, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            color: white;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+            padding: 60px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 24px;
+            line-height: 1.2;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Floating Particles */
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(246, 52, 88, 0.1);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+            backdrop-filter: blur(2px);
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 10px;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            composes: glass;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(246, 52, 88, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-radius: 30px;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: white;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.2);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Layers Section */
+        .layers-section {
+            padding: 120px 5%;
+            position: relative;
+        }
+
+        .layers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .layer-card {
+            composes: glass;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .layer-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .layer-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.2);
+        }
+
+        .layer-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .layer-card h4 {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .layer-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Animation Section */
+        .animation-section {
+            padding: 120px 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-container {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            composes: glass;
+        }
+
+        .security-animation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .core {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s infinite alternate;
+            box-shadow: 0 0 40px rgba(246, 52, 88, 0.5);
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(246, 52, 88, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 60px rgba(246, 52, 88, 0.7);
+            }
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(246, 52, 88, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 20s linear infinite;
+            backdrop-filter: blur(2px);
+        }
+
+        .ring-1 {
+            width: 200px;
+            height: 200px;
+        }
+
+        .ring-2 {
+            width: 300px;
+            height: 300px;
+            animation-delay: -5s;
+        }
+
+        .ring-3 {
+            width: 400px;
+            height: 400px;
+            animation-delay: -10s;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Protection elements */
+        .protection-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            z-index: 3;
+            animation: protectionPulse 2s infinite;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        @keyframes protectionPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        .security-shield {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f63458"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>') no-repeat center;
+            background-size: contain;
+            opacity: 0;
+            animation: shieldAppear 4s infinite;
+            z-index: 4;
+            filter: drop-shadow(0 0 10px rgba(246, 52, 88, 0.7));
+        }
+
+        @keyframes shieldAppear {
+            0%, 60% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            70%, 80% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+            90%, 100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .threat-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-dark);
+            border-radius: 50%;
+            z-index: 1;
+            animation: threatApproach 6s infinite;
+            box-shadow: 0 0 10px var(--primary-dark);
+        }
+
+        @keyframes threatApproach {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                transform: translate(-100px, -50px) scale(1.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-120px, -60px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 5%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            margin: 100px 5%;
+            border-radius: 24px;
+            composes: glass;
+            border: none;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: 50px 50px;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .cta-section .btn {
+            position: relative;
+            z-index: 1;
+            padding: 16px 32px;
+            font-size: 1rem;
+            color: white;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            border: none;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-section .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-light);
+            padding: 100px 5% 50px;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(246,52,88,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-column h3 {
+            color: var(--text);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+            transform: translateX(5px);
+        }
+
+        .footer-links a:hover i {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(246, 52, 88, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+            color: var(--text-secondary);
+        }
+
+        .footer-bottom a {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .layers-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .cta-buttons {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding-top: 100px;
+                min-height: auto;
+                padding-bottom: 80px;
+            }
+            
+            .hero-content {
+                padding: 40px 0;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-section {
+                margin: 80px 5%;
+            }
+            
+            .animation-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .features-grid, .layers-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2, .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+        .logo-img {
+            height: 42px; 
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .header.scrolled .logo-img {
+            height: 32px; 
+        }
+        .footer-logo-img {
+            height: 36px;
+            width: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+         <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="logo-img">
+        </a>
+        
+        <div class="nav-container">
+            <nav class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/about">About</a>
+                <a href="/login">Login</a>
+            </nav>
+            <div class="cta-buttons">
+                <a href="/login" class="btn btn-primary">Get Started</a>
+                <a href="/about" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Future Proof <span> Web3</span> with Quantum-Resistant Security</h1>
+            <p>Protect your blockchain ecosystem from the looming quantum era with advanced, zero-trust cryptography ensuring trust, privacy, and resilience in Web3</p>
+            <div class="hero-buttons">
+                <a href="/login" class="btn btn-primary">
+                    <i class="fas fa-shield-alt"></i> Get Protected
+                </a>
+                <a href="/about" class="btn btn-secondary">
+                    <i class="fas fa-book-open"></i> Learn More
+                </a>
+            </div>
+        </div>
+        <div class="floating-particles" id="floating-particles"></div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-title">
+            <h2>Advanced Security Features</h2>
+            <p>CryptonZT combines quantum-resistant cryptography with intelligent threat detection for unparalleled protection.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Zero Trust Framework</h3>
+                <p>Never trust, always verify. Our system continuously authenticates and validates every access request.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <h3>Data Fragmentation</h3>
+                <p>Your data is split into fragments stored separately with decoy data to mislead attackers.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>AI Monitoring</h3>
+                <p>Machine learning algorithms detect anomalies in real-time and trigger protective measures instantly.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3>Self-Healing</h3>
+                <p>Automatically repairs and re-encrypts compromised data fragments without user intervention.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-random"></i>
+                </div>
+                <h3>Secure Routing</h3>
+                <p>Data travels through multiple secure paths to prevent interception and ensure delivery.</p>
+            </div>
+            <div class="feature-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <h3>Decoy Systems</h3>
+                <p>Automatically creates fake data and systems to confuse and misdirect potential attackers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layers Section -->
+    <section class="layers-section">
+        <div class="section-title">
+            <h2>Multi-Layered Quantum Protection</h2>
+            <p>Our defense-in-depth system ensures your data remains secure against both current and future threats.</p>
+        </div>
+        <div class="layers-container">
+            <div class="layer-card animate">
+                <div class="layer-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Layer 1</h4>
+                <h3>Kyber Encryption</h3>
+                <p>Quantum-safe lattice-based cryptography designed to protect against future cyber threats.</p>
+            </div>
+            <div class="layer-card animate">
+                <div class="layer-icon">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <h4>Layer 2</h4>
+                <h3>McEliece Protection</h3>
+                <p>Code-based cryptography adding an extra layer of protection against quantum attacks.</p>
+            </div>
+            <div class="layer-card animate">
+                <div class="feature-icon">
+                    <i class="fas fa-signature"></i>
+                </div>
+                <h4>Layer 3</h4>
+                <h3>Falcon Signature</h3>
+                <p>Post-quantum digital signatures to verify authenticity and integrity of your data.</p>
+            </div>
+            <div class="layer-card animate">
+                <div class="layer-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h4>Layer 4</h4>
+                <h3>NTRU Security</h3>
+                <p>Lattice-based encryption making data resilient to both classical and quantum attacks.</p>
+            </div>
+            <div class="layer-card animate">
+                <div class="layer-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h4>Layer 5</h4>
+                <h3>Dilithium Shield</h3>
+                <p>If a threat is detected, this final security layer ensures data remains secure.</p>
+            </div>
+            <div class="layer-card animate">
+                <div class="layer-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h4>AI Protection</h4>
+                <h3>Threat Detection</h3>
+                <p>Continuous monitoring and emergency response for unauthorized access attempts.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Animation Section -->
+    <section class="animation-section">
+        <div class="section-title">
+            <h2>Quantum Security in Action</h2>
+            <p>Our dynamic security system adapts to threats in real-time, providing multi-layered protection</p>
+        </div>
+        <div class="animation-container">
+            <div class="security-animation">
+                <div class="core"></div>
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+                <!-- Protection elements will be added by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Future-Proof Your Security?</h2>
+        <p>Join the forefront of quantum-resistant protection and ensure your data remains secure in the post-quantum era.</p>
+        <a href="/login" class="btn btn-primary">Get Started Today</a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="footer-logo-img">
+                </div>
+                <p>Enforcing Zero Trust Security with multi-layer post-quantum cryptography to protect against emerging threats.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Product</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Features</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Solutions</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Whitepapers</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Case Studies</a></li>
+                    <li><a href="/API_reference"><i class="fas fa-chevron-right"></i> API Reference</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright &copy; 2023 CryptonZT. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('floating-particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                
+                // Random size
+                const size = Math.random() * 8 + 4;
+                
+                // Random animation
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * -20;
+                const opacity = Math.random() * 0.2 + 0.1;
+                
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.opacity = opacity;
+                
+                // Random blur
+                particle.style.backdropFilter = `blur(${Math.random() * 3 + 1}px)`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Intersection Observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        document.querySelectorAll('.feature-card, .layer-card').forEach(card => {
+            observer.observe(card);
+        });
+        
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const ctaButtons = document.querySelector('.cta-buttons');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            const isVisible = navLinks.style.display === 'flex';
+            
+            if (isVisible) {
+                navLinks.style.display = 'none';
+                ctaButtons.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                ctaButtons.style.display = 'flex';
+                
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'fixed';
+                navLinks.style.top = '80px';
+                navLinks.style.left = '0';
+                navLinks.style.right = '0';
+                navLinks.style.backgroundColor = 'rgba(15, 15, 18, 0.95)';
+                navLinks.style.padding = '30px 5%';
+                navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+                navLinks.style.backdropFilter = 'blur(16px)';
+                navLinks.style.borderBottom = '1px solid rgba(255, 255, 255, 0.05)';
+                navLinks.style.gap = '20px';
+                navLinks.style.zIndex = '999';
+                
+                ctaButtons.style.flexDirection = 'column';
+                ctaButtons.style.position = 'fixed';
+                ctaButtons.style.top = 'calc(80px + 180px)';
+                ctaButtons.style.left = '5%';
+                ctaButtons.style.right = '5%';
+                ctaButtons.style.padding = '0 0 30px';
+                ctaButtons.style.gap = '15px';
+                ctaButtons.style.zIndex = '999';
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container') && !e.target.closest('.mobile-menu-btn')) {
+                navLinks.style.display = 'none';
+                ctaButtons.style.display = 'none';
+            }
+        });
+        
+        // Add protection animation elements
+        function initSecurityAnimation() {
+            const securityAnimation = document.querySelector('.security-animation');
+            
+            // Create protection dots
+            for (let i = 0; i < 8; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('protection-dot');
+                securityAnimation.appendChild(dot);
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const radius = 150;
+                const x = Math.cos(angle) * radius;
+                const y = Math.sin(angle) * radius;
+                
+                dot.style.left = `calc(50% + ${x}px)`;
+                dot.style.top = `calc(50% + ${y}px)`;
+                dot.style.animationDelay = `${i * 0.25}s`;
+            }
+            
+            // Create security shields
+            for (let i = 0; i < 3; i++) {
+                const shield = document.createElement('div');
+                shield.classList.add('security-shield');
+                securityAnimation.appendChild(shield);
+                
+                const angle = (i / 3) * Math.PI * 2;
+                const x = Math.cos(angle) * 100;
+                const y = Math.sin(angle) * 100;
+                
+                shield.style.left = `calc(50% + ${x}px)`;
+                shield.style.top = `calc(50% + ${y}px)`;
+                shield.style.animationDelay = `${i * 1.5}s`;
+            }
+            
+            // Create approaching threats
+            for (let i = 0; i < 4; i++) {
+                const threat = document.createElement('div');
+                threat.classList.add('threat-dot');
+                securityAnimation.appendChild(threat);
+                
+                const startX = 300 + Math.random() * 100;
+                const startY = 100 + Math.random() * 300;
+                
+                threat.style.left = `${startX}px`;
+                threat.style.top = `${startY}px`;
+                threat.style.animationDelay = `${i * 2}s`;
+            }
+        }
+        
+        // Initialize everything when page loads
+        window.addEventListener('load', () => {
+            createParticles();
+            initSecurityAnimation();
+        });
+    </script>
+</body>
+
+</html>

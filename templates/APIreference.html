@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Reference | CryptonZT</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f63458;
+            --primary-dark: #e42527;
+            --accent: #ff4366;
+            --bg: #0f0f12;
+            --bg-light: #1a1a1f;
+            --text: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --glass-bg: rgba(30, 30, 35, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(246, 52, 88, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(100, 100, 255, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            background: rgba(15, 15, 18, 0.8);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .api-reference {
+            padding: 140px 5% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .api-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .api-header h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .api-header h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .api-header p {
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .api-categories {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 992px) {
+            .api-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .category-sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .category-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .category-item {
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-left: 3px solid transparent;
+        }
+
+        .category-item:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .category-item.active {
+            color: var(--text);
+            background: rgba(246, 52, 88, 0.1);
+            border-left: 3px solid var(--primary);
+        }
+
+        .category-content {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .endpoint-group {
+            scroll-margin-top: 140px;
+        }
+
+        .endpoint-group h2 {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .endpoint-group h2::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+        }
+
+        .endpoint-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .endpoint-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            padding: 18px 25px;
+            background: rgba(15, 15, 18, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .method {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            margin-right: 15px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .method.get {
+            background: rgba(97, 175, 239, 0.15);
+            color: #61afef;
+            border: 1px solid rgba(97, 175, 239, 0.3);
+        }
+
+        .method.post {
+            background: rgba(152, 195, 121, 0.15);
+            color: #98c379;
+            border: 1px solid rgba(152, 195, 121, 0.3);
+        }
+
+        .method.patch {
+            background: rgba(229, 192, 123, 0.15);
+            color: #e5c07b;
+            border: 1px solid rgba(229, 192, 123, 0.3);
+        }
+
+        .method.delete {
+            background: rgba(224, 108, 117, 0.15);
+            color: #e06c75;
+            border: 1px solid rgba(224, 108, 117, 0.3);
+        }
+
+        .endpoint-path {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1.05rem;
+            color: var(--text);
+            flex-grow: 1;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-right: 20px;
+        }
+
+        .endpoint-path span.param {
+            color: var(--primary);
+        }
+
+        .endpoint-body {
+            padding: 25px;
+        }
+
+        .endpoint-description {
+            margin-bottom: 25px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .endpoint-section {
+            margin-bottom: 25px;
+        }
+
+        .endpoint-section h4 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .endpoint-section h4 i {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .parameters-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .parameters-table th {
+            text-align: left;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .parameters-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            vertical-align: top;
+        }
+
+        .parameters-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .param-name {
+            font-family: 'Courier New', Courier, monospace;
+            color: var(--text);
+        }
+
+        .param-required {
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(246, 52, 88, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .example-request,
+        .example-response {
+            background: rgba(15, 15, 18, 0.6);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        pre {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .code-header h5 {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text);
+        }
+
+        .code-json {
+            color: #abb2bf;
+        }
+
+        .token.property {
+            color: #e06c75;
+        }
+
+        .token.string {
+            color: #98c379;
+        }
+
+        .token.number {
+            color: #d19a66;
+        }
+
+        .token.boolean {
+            color: #56b6c2;
+        }
+
+        .token.null {
+            color: #56b6c2;
+        }
+
+        .token.keyword {
+            color: #c678dd;
+        }
+
+        @media (max-width: 768px) {
+            .api-reference {
+                padding-top: 120px;
+            }
+            
+            .endpoint-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .parameters-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .api-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .endpoint-group h2 {
+                font-size: 1.5rem;
+            }
+        }
+        .logo-img {
+            height: 42px; 
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .header.scrolled .logo-img {
+            height: 32px; 
+        }
+         .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5%;
+            background: rgba(15, 15, 18, 0.8);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            padding: 12px 5%;
+            background: rgba(15, 15, 18, 0.9);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.4rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .active {
+            color: var(--text) !important;
+            background: rgba(246, 52, 88, 0.1) !important;
+        }
+
+        .active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(246, 52, 88, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            color: white;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            color: white;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            padding-top: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease;
+            padding: 60px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            margin-bottom: 24px;
+            line-height: 1.2;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Floating Particles */
+        .floating-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(246, 52, 88, 0.1);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+            backdrop-filter: blur(2px);
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 120px 5%;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            composes: glass;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(246, 52, 88, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-radius: 30px;
+        }
+
+        .feature-card:hover::before {
+            opacity: 0.6;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: white;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.2);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotate(15deg) scale(1.1);
+            background: linear-gradient(45deg, var(--primary-dark), var(--primary));
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Layers Section */
+        .layers-section {
+            padding: 120px 5%;
+            position: relative;
+        }
+
+        .layers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .layer-card {
+            composes: glass;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .layer-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition);
+        }
+
+        .layer-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .layer-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.2);
+        }
+
+        .layer-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .layer-card h4 {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .layer-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Animation Section */
+        .animation-section {
+            padding: 120px 5%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-container {
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: 0 auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            composes: glass;
+        }
+
+        .security-animation {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .core {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s infinite alternate;
+            box-shadow: 0 0 40px rgba(246, 52, 88, 0.5);
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(246, 52, 88, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 60px rgba(246, 52, 88, 0.7);
+            }
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(246, 52, 88, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 20s linear infinite;
+            backdrop-filter: blur(2px);
+        }
+
+        .ring-1 {
+            width: 200px;
+            height: 200px;
+        }
+
+        .ring-2 {
+            width: 300px;
+            height: 300px;
+            animation-delay: -5s;
+        }
+
+        .ring-3 {
+            width: 400px;
+            height: 400px;
+            animation-delay: -10s;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* Protection elements */
+        .protection-dot {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            z-index: 3;
+            animation: protectionPulse 2s infinite;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        @keyframes protectionPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
+            }
+        }
+
+        .security-shield {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f63458"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z"/></svg>') no-repeat center;
+            background-size: contain;
+            opacity: 0;
+            animation: shieldAppear 4s infinite;
+            z-index: 4;
+            filter: drop-shadow(0 0 10px rgba(246, 52, 88, 0.7));
+        }
+
+        @keyframes shieldAppear {
+            0%, 60% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            70%, 80% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+            90%, 100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .threat-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-dark);
+            border-radius: 50%;
+            z-index: 1;
+            animation: threatApproach 6s infinite;
+            box-shadow: 0 0 10px var(--primary-dark);
+        }
+
+        @keyframes threatApproach {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                transform: translate(-100px, -50px) scale(1.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-120px, -60px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 120px 5%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            margin: 100px 5%;
+            border-radius: 24px;
+            composes: glass;
+            border: none;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: 50px 50px;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 20px;
+            font-weight: 800;
+            position: relative;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-section p {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .cta-section .btn {
+            position: relative;
+            z-index: 1;
+            padding: 16px 32px;
+            font-size: 1rem;
+            color: white;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            border: none;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .cta-section .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            background: white;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-light);
+            padding: 100px 5% 50px;
+            color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(246,52,88,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: 50px 50px;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-column h3 {
+            color: var(--text);
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            border-radius: 3px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+            transform: translateX(5px);
+        }
+
+        .footer-links a:hover i {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(246, 52, 88, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 80px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+            color: var(--text-secondary);
+        }
+
+        .footer-bottom a {
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .layers-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .cta-buttons {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding-top: 100px;
+                min-height: auto;
+                padding-bottom: 80px;
+            }
+            
+            .hero-content {
+                padding: 40px 0;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-section {
+                margin: 80px 5%;
+            }
+            
+            .animation-container {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .features-grid, .layers-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title h2, .cta-section h2 {
+                font-size: 2rem;
+            }
+        }
+        .logo-img {
+            height: 42px; 
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .header.scrolled .logo-img {
+            height: 32px; 
+        }
+        .footer-logo-img {
+            height: 36px;
+            width: auto;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+         <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="logo-img">
+        </a>
+        
+        <div class="nav-container">
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/about">About</a>
+                <a href="/login">Login</a>
+            </nav>
+            <div class="cta-buttons">
+                <a href="/login" class="btn btn-primary">Get Started</a>
+                <a href="/about" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <!-- API Reference Content -->
+    <main class="api-reference">
+        <div class="api-header">
+            <h1>CryptonZT <span>API Reference</span></h1>
+            <p>Explore our comprehensive API documentation to integrate quantum-resistant security into your Blockchain Ecosystem applications. All API requests require authentication with your API key.</p>
+        </div>
+
+        <div class="api-categories">
+            <div class="category-sidebar">
+                <ul class="category-list">
+                    <li class="category-item active" data-category="core">Core Endpoints</li>
+                    <li class="category-item" data-category="keys">Key Management</li>
+                    <li class="category-item" data-category="user">User Endpoints</li>
+                    <li class="category-item" data-category="management">Data Management</li>
+                </ul>
+            </div>
+
+            <div class="category-content">
+                <!-- Core Endpoints -->
+                <section id="core" class="endpoint-group">
+                    <h2>Core Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <div class="endpoint-path">/api/protectKey</div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Encrypts text or files using quantum-resistant algorithms. Returns the encrypted data ID and metadata.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-list"></i> Request Parameters</h4>
+                                <table class="parameters-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">data<span class="param-required">required</span></td>
+                                            <td>String/File</td>
+                                            <td>The text content or file to be encrypted</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">metadata</td>
+                                            <td>String</td>
+                                            <td>Optional description for the encrypted data</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-code"></i> Example Request</h4>
+                                <div class="example-request">
+                                    <div class="code-header">
+                                        <h5>JSON Payload</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "data": "Sensitive information to protect",
+  "metadata": "API Test"
+}</code></pre>
+                                </div>
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 201</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "data_format": "txt",
+  "data_id": "DATA_f0d1d5c7cc42ead9",
+  "key_id": "KEY_d8ae58a4ed9934fd",
+  "metadata": "API Test",
+  "size_mb": 0.0,
+  "status": "success",
+  "timestamp": "2025-08-10T00:32:47.943033"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <div class="endpoint-path">/api/data/<span class="param">:data_id</span></div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Retrieves detailed information about encrypted data including security status.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "data": {
+    "_id": "6897a398d90d373669a3b568",
+    "anomaly_detected": false,
+    "anomaly_detected_at": null,
+    "anomaly_triggered": false,
+    "data_format": "txt",
+    "data_id": "DATA_01c3c7179e42f47b",
+    "decoy_attached": false,
+    "encrypted_at": "2025-08-10T01:08:00.576000",
+    "file_size_mb": false,
+    "key_id": "KEY_1368e0b0bf325f38",
+    "large_file": false,
+    "layers": 4,
+    "meta_data": "Management Test",
+    "position_size_enc_data_added": false,
+    "status": "Active",
+    "user_id": "101871160399704706229"
+  },
+  "status": "success"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method delete">DELETE</span>
+                            <div class="endpoint-path">/api/data/<span class="param">:data_id</span></div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Permanently deletes encrypted data and all its fragments. This action is irreversible.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "status": "success",
+  "message": "Data and all fragments permanently deleted"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Key Management -->
+                <section id="keys" class="endpoint-group" style="display: none;">
+                    <h2>Key Management</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <div class="endpoint-path">/api/keys/<span class="param">:key_id</span></div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Retrieves metadata about an encryption key, including its algorithm and associated data.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "key": {
+    "algorithm": "Kyber1024-AES256",
+    "associated_data": {
+      "data_format": "txt",
+      "meta_data": "Management Test"
+    },
+    "created_at": "2025-08-10T01:08:00.572000",
+    "data_id": "DATA_01c3c7179e42f47b",
+    "key_id": "KEY_1368e0b0bf325f38",
+    "status": "active"
+  },
+  "status": "success"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method post">POST</span>
+                            <div class="endpoint-path">/api/keys/rotate/<span class="param">:data_id</span></div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Rotates the encryption keys for specified data while maintaining accessibility.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "status": "success",
+  "message": "Key rotation completed",
+  "new_key_id": "KEY_9k3l5m7n8p",
+  "data_id": "DATA_01c3c7179e42f47b"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- User Endpoints -->
+                <section id="user" class="endpoint-group" style="display: none;">
+                    <h2>User Endpoints</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <div class="endpoint-path">/api/userProfile</div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Retrieves the authenticated user's profile information and security statistics.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "profile": {
+    "email": "suriyajaya6904@gmail.com",
+    "last_login": "2025-08-09T18:12:27.569000",
+    "name": "Suriyaprasaad SP",
+    "security_shield_activated": 0,
+    "total_data_secured": 18,
+    "user_id": "101871160399704706229"
+  },
+  "status": "success"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Data Management -->
+                <section id="management" class="endpoint-group" style="display: none;">
+                    <h2>Data Management</h2>
+                    
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method get">GET</span>
+                            <div class="endpoint-path">/api/manageData</div>
+                        </div>
+                        <div class="endpoint-body">
+                            <div class="endpoint-description">
+                                Lists all encrypted data items with their metadata. Supports pagination.
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-list"></i> Query Parameters</h4>
+                                <table class="parameters-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Parameter</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="param-name">page</td>
+                                            <td>Integer</td>
+                                            <td>Page number for pagination. Default: 1</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">limit</td>
+                                            <td>Integer</td>
+                                            <td>Items per page. Default: 20, Max: 100</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="param-name">sort</td>
+                                            <td>String</td>
+                                            <td>Sort field (encrypted_at, data_format). Default: encrypted_at</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="endpoint-section">
+                                <h4><i class="fas fa-reply"></i> Example Response</h4>
+                                <div class="example-response">
+                                    <div class="code-header">
+                                        <h5>Success 200</h5>
+                                        <button class="copy-btn">Copy</button>
+                                    </div>
+                                    <pre class="code-json"><code>{
+  "count": 19,
+  "data": [
+    {
+      "data_format": "txt",
+      "data_id": "DATA_01c3c7179e42f47b",
+      "encrypted_at": "2025-08-10T01:08:00.576000",
+      "layers": 4,
+      "meta_data": "Management Test",
+      "status": "Active"
+    },
+    {
+      "data_format": "png",
+      "data_id": "DATA_81a32d8ce54ab3ed",
+      "encrypted_at": "2025-08-10T01:07:56.065000",
+      "layers": 4,
+      "meta_data": "API Protected Data",
+      "status": "Active"
+    }
+  ],
+  "status": "success"
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="footer-logo-img">
+                </div>
+                <p>Enforcing Zero Trust Security with multi-layer post-quantum cryptography to protect against emerging threats.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Product</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Features</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Solutions</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Blog</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Whitepapers</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Case Studies</a></li>
+                    <li><a href="/API_reference"><i class="fas fa-chevron-right"></i> API Reference</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        <div class="footer-bottom">
+            <p>Copyright &copy; 2023 CryptonZT. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Category navigation
+        document.querySelectorAll('.category-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Update active state
+                document.querySelector('.category-item.active').classList.remove('active');
+                this.classList.add('active');
+                
+                // Hide all sections
+                document.querySelectorAll('.endpoint-group').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // Show selected section
+                const category = this.getAttribute('data-category');
+                document.getElementById(category).style.display = 'block';
+                
+                // Scroll to top of section
+                document.getElementById(category).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeBlock = this.parentElement.nextElementSibling;
+                const textToCopy = codeBlock.textContent;
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = this.textContent;
+                    this.textContent = 'Copied!';
+                    this.style.backgroundColor = 'rgba(152, 195, 121, 0.2)';
+                    this.style.borderColor = 'rgba(152, 195, 121, 0.5)';
+                    this.style.color = '#98c379';
+                    
+                    setTimeout(() => {
+                        this.textContent = originalText;
+                        this.style.backgroundColor = '';
+                        this.style.borderColor = '';
+                        this.style.color = '';
+                    }, 2000);
+                });
+            });
+        });
+
+        // Highlight JSON syntax
+        function highlightJson() {
+            document.querySelectorAll('.code-json').forEach(block => {
+                const json = block.textContent;
+                block.innerHTML = '';
+                
+                try {
+                    const parsed = JSON.parse(json);
+                    const highlighted = syntaxHighlight(parsed);
+                    block.innerHTML = highlighted;
+                } catch (e) {
+                    block.textContent = json;
+                }
+            });
+        }
+
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, null, 2);
+            }
+            
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            return json.replace(
+                /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+                function(match) {
+                    let cls = 'number';
+                    if (/^"/.test(match)) {
+                        if (/:$/.test(match)) {
+                            cls = 'property';
+                        } else {
+                            cls = 'string';
+                        }
+                    } else if (/true|false/.test(match)) {
+                        cls = 'boolean';
+                    } else if (/null/.test(match)) {
+                        cls = 'null';
+                    }
+                    return '<span class="token ' + cls + '">' + match + '</span>';
+                }
+            );
+        }
+
+        // Initialize highlighting
+        document.addEventListener('DOMContentLoaded', highlightJson);
+    </script>
+</body>
+</html>

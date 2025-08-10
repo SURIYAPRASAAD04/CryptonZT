@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptonZT | Account Settings</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --primary-red: #E42527;
+            --primary-blue: #f63458;
+            --accent-blue: #ff4366;
+            --dark-bg: #1a1a1a;
+            --light-bg: #f0f2f5;
+            --panel-bg: rgba(255, 255, 255, 0.25);
+            --dark-panel: rgba(30, 30, 30, 0.4);
+            --text-dark: #1e1e1e;
+            --text-light: #f0f0f0;
+            --border-light: rgba(255, 255, 255, 0.18);
+            --border-dark: rgba(0, 0, 0, 0.25);
+            --shadow-sm: 0 1px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.18);
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 100px;
+            --topbar-height: 70px;
+            --transition-speed: 0.3s;
+            --glass-blur: 16px;
+            --card-glow: 0 0 15px rgba(246, 52, 88, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            transition: all var(--transition-speed) ease;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 25% 25%, rgba(246, 52, 88, 0.1) 0%, transparent 50%);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            background-image: radial-gradient(circle at 75% 25%, rgba(246, 52, 88, 0.1) 0%, transparent 50%);
+        }
+
+        /* Quantum Particle Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float 15s infinite linear;
+            filter: blur(0.5px);
+        }
+
+        body.dark-mode .quantum-particle {
+            background-color: var(--accent-blue);
+            opacity: 0.6;
+            filter: blur(1px);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-speed) ease;
+        }
+
+        body.dark-mode .glass {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        /* Layout Structure */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Navigation - Futuristic Glass Panel */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--border-light);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .sidebar {
+            background: rgba(20, 20, 20, 0.3);
+            border-right: 1px solid var(--border-dark);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--topbar-height);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            background: linear-gradient(to right, rgba(246, 52, 88, 0.1), transparent);
+        }
+
+        body.dark-mode .sidebar-header {
+            background: linear-gradient(to right, rgba(246, 52, 88, 0.2), transparent);
+        }
+
+        /* Logo styling */
+        .sidebar-logo {
+            height: 32px;
+            transition: all var(--transition-speed) ease;
+            opacity: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .sidebar-logo-dark {
+            position: absolute;
+            height: 32px;
+            left: 15px;
+            transition: all var(--transition-speed) ease;
+            opacity: 0;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        body.dark-mode .sidebar-logo {
+            opacity: 0;
+        }
+
+        body.dark-mode .sidebar-logo-dark {
+            opacity: 1;
+        }
+
+        .sidebar.collapsed .sidebar-logo,
+        .sidebar.collapsed .sidebar-logo-dark {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* Sidebar toggle button */
+        .sidebar-toggle {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            cursor: pointer;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            transition: all var(--transition-speed) ease;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .sidebar-toggle {
+            background: rgba(30, 30, 30, 0.6);
+            color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        /* Sidebar menu */
+        .sidebar-menu {
+            padding: 20px 0;
+            transition: all var(--transition-speed) ease;
+            height: calc(100vh - var(--topbar-height));
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(246, 52, 88, 0.5) transparent;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background-color: rgba(246, 52, 88, 0.5);
+            border-radius: 3px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            margin: 8px 15px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            color: var(--text-dark);
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .menu-item {
+            color: var(--text-light);
+            background: rgba(30, 30, 30, 0.4);
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .menu-item .menu-text {
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .menu-item.active {
+            background: rgba(246, 52, 88, 0.15);
+            color: var(--primary-blue);
+            font-weight: 600;
+            box-shadow: 0 0 0 2px rgba(246, 52, 88, 0.3);
+        }
+
+        body.dark-mode .menu-item.active {
+            background: rgba(246, 52, 88, 0.25);
+            box-shadow: 0 0 0 2px rgba(246, 52, 88, 0.4);
+        }
+
+        .menu-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .menu-item:hover:not(.active) {
+            background: rgba(50, 50, 50, 0.6);
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--accent-blue));
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Tooltip for collapsed menu */
+        .menu-tooltip {
+            position: absolute;
+            left: calc(var(--sidebar-collapsed-width) + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .menu-tooltip {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .sidebar.collapsed .menu-item:hover .menu-tooltip {
+            opacity: 1;
+            left: var(--sidebar-collapsed-width);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding-top: var(--topbar-height);
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Top Bar - Floating Glass Panel */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            height: var(--topbar-height);
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            z-index: 900;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar.collapsed ~ .main-content .top-bar {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        body.dark-mode .top-bar {
+            background: rgba(30, 30, 30, 0.5);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        /* Breadcrumb navigation */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all var(--transition-speed) ease;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .breadcrumb-item {
+            color: var(--text-light);
+        }
+
+        .breadcrumb-item:hover {
+            background: rgba(246, 52, 88, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .breadcrumb-separator {
+            margin: 0 10px;
+            color: var(--primary-blue);
+            opacity: 0.6;
+        }
+
+        /* Top bar right section */
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all var(--transition-speed) ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: rgba(30, 30, 30, 0.6);
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        /* User profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 950;
+        }
+
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-img:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(246, 52, 88, 0.3);
+        }
+
+        /* User dropdown menu */
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: 12px;
+            padding: 10px 0;
+            min-width: 220px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border-light);
+            z-index: 1000;
+            transform: translateY(10px);
+        }
+
+        body.dark-mode .user-menu {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .user-profile.active .user-menu {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            transition: all var(--transition-speed) ease;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+        }
+
+        body.dark-mode .user-menu-item {
+            color: var(--text-light);
+        }
+
+        .user-menu-item:hover {
+            background: rgba(246, 52, 88, 0.1);
+            color: var(--primary-blue);
+        }
+
+        body.dark-mode .user-menu-item:hover {
+            background: rgba(246, 52, 88, 0.2);
+        }
+
+        .user-menu-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            color: var(--primary-blue);
+        }
+
+        /* Settings Content */
+        .settings-content {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Settings Container */
+        .settings-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        body.dark-mode .settings-panel {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .settings-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(246, 52, 88, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: -1;
+        }
+
+        .settings-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(246, 52, 88, 0.5);
+        }
+
+        .settings-panel:hover::before {
+            opacity: 1;
+        }
+
+        /* Panel Header */
+        .panel-header {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-header i {
+            font-size: 1.8rem;
+            color: var(--primary-blue);
+        }
+
+        .panel-header h2 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .panel-header p {
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        body.dark-mode .panel-header p {
+            color: var(--text-light);
+        }
+
+        /* Notification Item */
+        .notification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .notification-item {
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .notification-text {
+            flex: 1;
+        }
+
+        .notification-text h3 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .notification-text h3 {
+            color: var(--text-light);
+        }
+
+        .notification-text p {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.6;
+        }
+
+        body.dark-mode .notification-text p {
+            color: var(--text-light);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 15px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.3);
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        body.dark-mode .toggle-slider {
+            background-color: rgba(30, 30, 30, 0.5);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--primary-blue);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Protection Grid */
+        .protection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        /* Protection Item */
+        .protection-item {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 3px solid var(--primary-blue);
+            transition: all var(--transition-speed) ease;
+        }
+
+        body.dark-mode .protection-item {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .protection-item i {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+        }
+
+        .protection-item.active {
+            background: rgba(246, 52, 88, 0.1);
+        }
+
+        .protection-item.triggered {
+            border-left-color: var(--accent-blue);
+        }
+
+        .protection-item.triggered i {
+            color: var(--accent-blue);
+        }
+
+        .protection-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .protection-name {
+            color: var(--text-light);
+        }
+
+        .protection-desc {
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            opacity: 0.6;
+        }
+
+        body.dark-mode .protection-desc {
+            color: var(--text-light);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .status-active {
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        .status-triggered {
+            background: rgba(255, 67, 102, 0.2);
+            color: var(--accent-blue);
+        }
+
+        /* Developer Mode Section */
+        .developer-mode {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .developer-mode {
+            border-top: 1px solid var(--border-dark);
+        }
+
+        .developer-mode-content {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .developer-mode.active .developer-mode-content {
+            display: block;
+        }
+
+        /* Token Generator */
+        .token-generator {
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        body.dark-mode .token-generator {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .token-display {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .token-value {
+            flex: 1;
+            font-family: monospace;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            word-break: break-all;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .token-value {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .copy-token {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+        }
+
+        .copy-token:hover {
+            background: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .copy-token i {
+            margin-right: 5px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(246, 52, 88, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            background: #f63458;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.5);
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .top-bar {
+                left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-content {
+                padding: 20px;
+            }
+            .protection-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .protection-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Menu Toggle Button (for mobile) */
+        .menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            margin-right: 15px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .menu-toggle {
+            background: rgba(40, 40, 40, 0.7);
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Quantum Particle Background -->
+    <div class="quantum-bg" id="quantum-bg"></div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='img/CryptonZT - light.png') }}" alt="CryptonZT Logo" class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="sidebar-logo-dark">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="/" class="menu-item">
+                    <i class="fas fa-lock"></i>
+                    <span class="menu-text">Secure Data</span>
+                    <span class="menu-tooltip">Secure Data</span>
+                </a>
+                
+                <a href="/managedata" class="menu-item">
+                    <i class="fas fa-database"></i>
+                    <span class="menu-text">Manage Data</span>
+                    <span class="menu-tooltip">Manage Data</span>
+                </a>
+                
+                <a href="/" class="menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="menu-text">Security</span>
+                    <span class="menu-tooltip">Security</span>
+                </a>
+                
+                <a href="/account_settings" class="menu-item active">
+                    <i class="fas fa-cog"></i>
+                    <span class="menu-text">Settings</span>
+                    <span class="menu-tooltip">Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <a href="/" class="breadcrumb-item">Home</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <a href="/account_settings" class="breadcrumb-item">Settings</a>
+                    </div>
+                </div>
+                
+                <div class="top-bar-right">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="user-profile">
+                        <img src="{{ picture }}" alt="User" class="user-img">
+                        <div class="user-menu">
+                            <a href="/my_profile" class="user-menu-item">
+                                <i class="fas fa-user"></i>
+                                My Profile
+                            </a>
+                            <a href="/account_settings" class="user-menu-item">
+                                <i class="fas fa-cog"></i>
+                                Account Settings
+                            </a>
+                            <a href="/logout" class="user-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Settings Content -->
+            <div class="settings-content">
+                <div class="settings-container">
+                    <!-- Notification Preferences -->
+                    <div class="settings-panel">
+                        <div class="panel-header">
+                            <i class="fas fa-bell"></i>
+                            <h2>Notification Preferences</h2>
+                        </div>
+                        <p>Choose when you want to be notified:</p>
+                        
+                        <div class="notification-item">
+                            <div class="notification-text">
+                                <h3>Notify me when an anomaly is detected</h3>
+                                <p>Receive immediate alerts for suspicious activity</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-text">
+                                <h3>Notify me on every login to my account</h3>
+                                <p>Get notified of all authentication attempts</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="notification-item">
+                            <div class="notification-text">
+                                <h3>Notify me of important updates from the development team</h3>
+                                <p>Stay informed about system improvements</p>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Protection Status -->
+                     <div class="settings-panel">
+    <div class="panel-header">
+        <i class="fas fa-shield-alt"></i>
+        <h2>Layered Protection Status</h2>
+    </div>
+    <p>Your data is protected using a multi-layered quantum-secure encryption system</p>
+    
+    <h3 style="margin: 20px 0 10px 0; color: var(--primary-blue);">Default Protection Layers (Always Active)</h3>
+    <div class="protection-grid">
+        <div class="protection-item active">
+            <i class="fas fa-check-circle"></i>
+            <div>
+                <div class="protection-name">Kyber</div>
+                <div class="protection-desc">Key Encapsulation</div>
+                <span class="status-badge status-active">ACTIVE</span>
+            </div>
+        </div>
+        
+        <div class="protection-item active">
+            <i class="fas fa-check-circle"></i>
+            <div>
+                <div class="protection-name">Classic McEliece</div>
+                <div class="protection-desc">Key Encapsulation</div>
+                <span class="status-badge status-active">ACTIVE</span>
+            </div>
+        </div>
+        
+        <div class="protection-item active">
+            <i class="fas fa-check-circle"></i>
+            <div>
+                <div class="protection-name">Falcon</div>
+                <div class="protection-desc">Digital Signature</div>
+                <span class="status-badge status-active">ACTIVE</span>
+            </div>
+        </div>
+        
+        <div class="protection-item active">
+            <i class="fas fa-check-circle"></i>
+            <div>
+                <div class="protection-name">NTRU</div>
+                <div class="protection-desc">Key Encapsulation</div>
+                <span class="status-badge status-active">ACTIVE</span>
+            </div>
+        </div>
+    </div>
+    
+    <h3 style="margin: 20px 0 10px 0; color: var(--accent-blue);">Triggered Layer (Activated on Anomaly Detection)</h3>
+    <div class="protection-grid">
+        <div class="protection-item triggered">
+            <i class="fas fa-shield-virus"></i>
+            <div>
+                <div class="protection-name">Dilithium</div>
+                <div class="protection-desc">Digital Signature Scheme</div>
+                <span class="status-badge status-triggered">STANDBY</span>
+            </div>
+        </div>
+    </div>
+    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-dark); opacity: 0.6;">
+        <i class="fas fa-info-circle" style="color: var(--accent-blue);"></i> 
+        Dilithium will be activated only if suspicious activity or a threat is detected via ML anomaly detection.
+    </p>
+</div>
+
+<!-- Developer Mode -->
+<div class="settings-panel">
+    <div class="panel-header">
+        <i class="fas fa-code"></i>
+        <h2>Developer Mode</h2>
+    </div>
+    <p>Enable advanced developer features and API access</p>
+    
+    <div class="notification-item">
+        <div class="notification-text">
+            <h3>Enable Developer Mode</h3>
+            <p>Access advanced tools and API endpoints</p>
+        </div>
+        <label class="toggle-switch" id="developer-toggle">
+            <input type="checkbox">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    
+    <div class="developer-mode" id="developer-mode">
+        <div class="developer-mode-content">
+            <h3 style="margin: 20px 0 10px 0; color: var(--primary-blue);">API Access Token</h3>
+            <p style="margin-bottom: 15px; font-size: 0.9rem; color: white; opacity: 0.6;">
+                <i class="fas fa-exclamation-triangle" style="color: var(--accent-blue);"></i> 
+                Keep this token secure. It provides full access to your account via the API.
+            </p>
+            
+            <div class="token-generator">
+                <button class="btn btn-primary" id="generate-token" style="width: 100%;">
+                    <i class="fas fa-key"></i> Generate New Access Token
+                </button>
+                
+                <div class="token-display" id="token-display" style="display: none;">
+                    <div class="token-value" id="token-value"></div>
+                    <button class="copy-token" id="copy-token">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Button -->
+<div class="submit-btn">
+    <button class="btn btn-primary" id="save-settings">Save Settings</button>
+</div>
+</div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create quantum particles for background
+        function createParticles() {
+            const bg = document.getElementById('quantum-bg');
+            const particleCount = window.innerWidth < 768 ? 30 : 60;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('quantum-particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random animation
+                const duration = Math.random() * 15 + 15;
+                const delay = Math.random() * -30;
+                
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                // Random color variation
+                const hue = Math.random() * 30 + 200; // Blue hues
+                particle.style.backgroundColor = `hsla(${hue}, 80%, 60%, ${Math.random() * 0.4 + 0.2})`;
+                
+                bg.appendChild(particle);
+            }
+        }
+        
+        // Initialize particles
+        createParticles();
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Sidebar Toggle
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const menuToggle = document.querySelector('.menu-toggle');
+        
+        // Check for saved sidebar state
+        const savedSidebarState = localStorage.getItem('sidebar-collapsed');
+        if (savedSidebarState === 'true') {
+            sidebar.classList.add('collapsed');
+            sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+        }
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                localStorage.setItem('sidebar-collapsed', 'true');
+            } else {
+                sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                localStorage.setItem('sidebar-collapsed', 'false');
+            }
+        });
+
+        // Mobile Menu Toggle
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // User profile dropdown
+        const userProfile = document.querySelector('.user-profile');
+        
+        userProfile.addEventListener('click', function(e) {
+            e.stopPropagation();
+            this.classList.toggle('active');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!userProfile.contains(e.target)) {
+                userProfile.classList.remove('active');
+            }
+        });
+
+        // Developer Mode Toggle
+        const developerToggle = document.getElementById('developer-toggle');
+        const developerMode = document.getElementById('developer-mode');
+        
+        developerToggle.addEventListener('change', function() {
+            if (this.querySelector('input').checked) {
+                developerMode.classList.add('active');
+            } else {
+                developerMode.classList.remove('active');
+                document.getElementById('token-display').style.display = 'none';
+            }
+        });
+
+        // Generate Token Button
+        const generateTokenBtn = document.getElementById('generate-token');
+        const tokenDisplay = document.getElementById('token-display');
+        const tokenValue = document.getElementById('token-value');
+        const copyTokenBtn = document.getElementById('copy-token');
+        
+        generateTokenBtn.addEventListener('click', function() {
+            // Show loading state
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Token...';
+            this.disabled = true;
+            
+            // Simulate API call to generate token
+            setTimeout(() => {
+                // Generate a random token (in a real app, this would come from your backend)
+                const token = generateRandomToken(64);
+                tokenValue.textContent = token;
+                tokenDisplay.style.display = 'flex';
+                
+                // Reset button state
+                this.innerHTML = '<i class="fas fa-key"></i> Generate New Access Token';
+                this.disabled = false;
+            }, 1000);
+        });
+
+        // Copy Token Button
+        copyTokenBtn.addEventListener('click', function() {
+            const token = tokenValue.textContent;
+            navigator.clipboard.writeText(token).then(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 2000);
+            });
+        });
+
+        // Save Settings Button
+        const saveSettingsBtn = document.getElementById('save-settings');
+        
+        saveSettingsBtn.addEventListener('click', function() {
+            this.textContent = 'Saving...';
+            this.disabled = true;
+            
+            // Simulate saving settings
+            setTimeout(() => {
+                this.textContent = 'Settings Saved!';
+                this.style.background = 'var(--primary-blue)';
+                
+                setTimeout(() => {
+                    this.textContent = 'Save Settings';
+                    this.style.background = 'var(--primary-blue)';
+                    this.disabled = false;
+                }, 1500);
+            }, 1000);
+        });
+
+        // Helper function to generate random token
+        function generateRandomToken(length) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+            let token = '';
+            
+            for (let i = 0; i < length; i++) {
+                token += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            return token;
+        }
+    });
+</script>
+</body>
+</html>

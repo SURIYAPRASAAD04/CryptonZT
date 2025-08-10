@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptonZT | Data Details</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --primary-red: #E42527;
+            --primary-blue: #f63458;
+            --accent-blue: #ff4366;
+            --dark-bg: #1a1a1a;
+            --light-bg: #f0f2f5;
+            --panel-bg: rgba(255, 255, 255, 0.25);
+            --dark-panel: rgba(30, 30, 30, 0.4);
+            --text-dark: #1e1e1e;
+            --text-light: #f0f0f0;
+            --border-light: rgba(255, 255, 255, 0.18);
+            --border-dark: rgba(0, 0, 0, 0.25);
+            --shadow-sm: 0 1px 12px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.18);
+            --sidebar-width: 280px;
+            --sidebar-collapsed-width: 100px;
+            --topbar-height: 70px;
+            --transition-speed: 0.3s;
+            --glass-blur: 16px;
+            --card-glow: 0 0 15px rgba(246, 52, 88, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            transition: all var(--transition-speed) ease;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 25% 25%, rgba(246, 52, 88, 0.1) 0%, transparent 50%);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            background-image: radial-gradient(circle at 75% 25%, rgba(246, 52, 88, 0.1) 0%, transparent 50%);
+        }
+
+        /* Quantum Particle Background */
+        .quantum-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background-color: var(--primary-blue);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: float 15s infinite linear;
+            filter: blur(0.5px);
+        }
+
+        body.dark-mode .quantum-particle {
+            background-color: var(--accent-blue);
+            opacity: 0.6;
+            filter: blur(1px);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-speed) ease;
+        }
+
+        body.dark-mode .glass {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        /* Layout Structure */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Sidebar Navigation - Futuristic Glass Panel */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-right: 1px solid var(--border-light);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .sidebar {
+            background: rgba(20, 20, 20, 0.3);
+            border-right: 1px solid var(--border-dark);
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar.collapsed {
+            width: var(--sidebar-collapsed-width);
+        }
+
+        .sidebar-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--topbar-height);
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            background: linear-gradient(to right, rgba(246, 52, 88, 0.1), transparent);
+        }
+
+        body.dark-mode .sidebar-header {
+            background: linear-gradient(to right, rgba(246, 52, 88, 0.2), transparent);
+        }
+
+        /* Logo styling */
+        .sidebar-logo {
+            height: 32px;
+            transition: all var(--transition-speed) ease;
+            opacity: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .sidebar-logo-dark {
+            position: absolute;
+            height: 32px;
+            left: 15px;
+            transition: all var(--transition-speed) ease;
+            opacity: 0;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        body.dark-mode .sidebar-logo {
+            opacity: 0;
+        }
+
+        body.dark-mode .sidebar-logo-dark {
+            opacity: 1;
+        }
+
+        .sidebar.collapsed .sidebar-logo,
+        .sidebar.collapsed .sidebar-logo-dark {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        /* Sidebar toggle button */
+        .sidebar-toggle {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            cursor: pointer;
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            transition: all var(--transition-speed) ease;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .sidebar-toggle {
+            background: rgba(30, 30, 30, 0.6);
+            color: var(--accent-blue);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        /* Sidebar menu */
+        .sidebar-menu {
+            padding: 20px 0;
+            transition: all var(--transition-speed) ease;
+            height: calc(100vh - var(--topbar-height));
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(246, 52, 88, 0.5) transparent;
+        }
+
+        .sidebar-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-thumb {
+            background-color: rgba(246, 52, 88, 0.5);
+            border-radius: 3px;
+        }
+
+        .sidebar-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 25px;
+            margin: 8px 15px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            position: relative;
+            color: var(--text-dark);
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .menu-item {
+            color: var(--text-light);
+            background: rgba(30, 30, 30, 0.4);
+        }
+
+        .menu-item i {
+            margin-right: 15px;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+            flex-shrink: 0;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .menu-item .menu-text {
+            transition: all var(--transition-speed) ease;
+            font-weight: 500;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .menu-item.active {
+            background: rgba(246, 52, 88, 0.15);
+            color: var(--primary-blue);
+            font-weight: 600;
+            box-shadow: 0 0 0 2px rgba(246, 52, 88, 0.3);
+        }
+
+        body.dark-mode .menu-item.active {
+            background: rgba(246, 52, 88, 0.25);
+            box-shadow: 0 0 0 2px rgba(246, 52, 88, 0.4);
+        }
+
+        .menu-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .menu-item:hover:not(.active) {
+            background: rgba(50, 50, 50, 0.6);
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary-blue), var(--accent-blue));
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Tooltip for collapsed menu */
+        .menu-tooltip {
+            position: absolute;
+            left: calc(var(--sidebar-collapsed-width) + 15px);
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-speed) ease;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+            border: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .menu-tooltip {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .sidebar.collapsed .menu-item:hover .menu-tooltip {
+            opacity: 1;
+            left: var(--sidebar-collapsed-width);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding-top: var(--topbar-height);
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .sidebar.collapsed ~ .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+        }
+
+        /* Top Bar - Floating Glass Panel */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            height: var(--topbar-height);
+            position: fixed;
+            top: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            z-index: 900;
+            transition: all var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .sidebar.collapsed ~ .main-content .top-bar {
+            left: var(--sidebar-collapsed-width);
+        }
+
+        body.dark-mode .top-bar {
+            background: rgba(30, 30, 30, 0.5);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        /* Breadcrumb navigation */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .breadcrumb-item {
+            color: var(--text-dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all var(--transition-speed) ease;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+
+        body.dark-mode .breadcrumb-item {
+            color: var(--text-light);
+        }
+
+        .breadcrumb-item:hover {
+            background: rgba(246, 52, 88, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .breadcrumb-separator {
+            margin: 0 10px;
+            color: var(--primary-blue);
+            opacity: 0.6;
+        }
+
+        /* Top bar right section */
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Theme toggle button */
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all var(--transition-speed) ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .theme-toggle {
+            background: rgba(30, 30, 30, 0.6);
+            color: var(--text-light);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        /* User profile */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 950;
+        }
+
+        .user-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-blue);
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-img:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(246, 52, 88, 0.3);
+        }
+
+        /* User dropdown menu */
+        .user-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: 12px;
+            padding: 10px 0;
+            min-width: 220px;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border-light);
+            z-index: 1000;
+            transform: translateY(10px);
+        }
+
+        body.dark-mode .user-menu {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .user-profile.active .user-menu {
+            opacity: 1;
+            pointer-events: all;
+            transform: translateY(0);
+        }
+
+        .user-menu-item {
+            padding: 12px 20px;
+            transition: all var(--transition-speed) ease;
+            color: var(--text-dark);
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+        }
+
+        body.dark-mode .user-menu-item {
+            color: var(--text-light);
+        }
+
+        .user-menu-item:hover {
+            background: rgba(246, 52, 88, 0.1);
+            color: var(--primary-blue);
+        }
+
+        body.dark-mode .user-menu-item:hover {
+            background: rgba(246, 52, 88, 0.2);
+        }
+
+        .user-menu-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+            color: var(--primary-blue);
+        }
+
+        /* Data Details Content */
+        .data-details-content {
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Data Header */
+        .data-details-header {
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .data-details-title {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: inline-block;
+        }
+
+        .data-details-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-blue), var(--accent-blue));
+            border-radius: 3px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(246, 52, 88, 0.4);
+            position: relative;
+            overflow: hidden;
+            width: 170px;
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .back-btn:hover {
+            background: #f63458;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.5);
+        }
+
+        .back-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Data Cards - Glass Panel */
+        .data-details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .data-details-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .data-details-card {
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        body.dark-mode .data-details-card {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .data-details-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(246, 52, 88, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: -1;
+        }
+
+        .data-details-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(246, 52, 88, 0.5);
+        }
+
+        .data-details-card:hover::before {
+            opacity: 1;
+        }
+
+        .data-details-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(246, 52, 88, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition-speed) ease;
+            z-index: -1;
+        }
+
+        .data-details-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Card header */
+        .data-details-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-light);
+            position: relative;
+        }
+
+        body.dark-mode .data-details-card-header {
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .data-details-card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+        }
+
+        /* Status badge */
+        .data-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            backdrop-filter: blur(5px);
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 0 0 1px rgba(246, 52, 88, 0.3);
+        }
+
+        .status-active {
+            background: rgba(246, 52, 88, 0.15);
+            color: var(--primary-blue);
+        }
+
+        .status-inactive {
+            background: rgba(200, 200, 200, 0.2);
+            color: var(--text-dark);
+            box-shadow: 0 0 0 1px rgba(200, 200, 200, 0.3);
+        }
+
+        body.dark-mode .status-inactive {
+            background: rgba(100, 100, 100, 0.3);
+            color: var(--text-light);
+            box-shadow: 0 0 0 1px rgba(100, 100, 100, 0.4);
+        }
+
+        .status-fragmented {
+            background: rgba(228, 37, 39, 0.15);
+            color: var(--primary-red);
+            box-shadow: 0 0 0 1px rgba(228, 37, 39, 0.3);
+        }
+
+        /* Data grid */
+        .data-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .data-details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Data detail items */
+        .data-detail-item {
+            margin-bottom: 15px;
+        }
+
+        .data-detail-label {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.7;
+            margin-bottom: 5px;
+            display: block;
+            font-weight: 500;
+        }
+
+        body.dark-mode .data-detail-label {
+            color: var(--text-light);
+        }
+
+        .data-detail-value {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            word-break: break-word;
+        }
+
+        body.dark-mode .data-detail-value {
+            color: var(--text-light);
+        }
+
+        .data-detail-value.file-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon-bg {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(246, 52, 88, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(246, 52, 88, 0.2);
+        }
+
+        body.dark-mode .file-icon-bg {
+            background: rgba(246, 52, 88, 0.2);
+            border: 1px solid rgba(246, 52, 88, 0.3);
+        }
+
+        .file-icon-bg i {
+            font-size: 1.2rem;
+            color: var(--primary-blue);
+        }
+
+        /* Security Visualization */
+        .security-visualization {
+            height: 200px;
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .security-visualization {
+            background: var(--dark-panel);
+            border: 1px solid var(--border-dark);
+        }
+
+        .security-layers {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .security-layer {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: var(--light-bg);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .security-layer {
+            background: var(--dark-bg);
+        }
+
+        .security-layer::before {
+            content: '';
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: var(--panel-bg);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        body.dark-mode .security-layer::before {
+            background: var(--dark-panel);
+        }
+
+        .security-layer i {
+            position: relative;
+            font-size: 1.5rem;
+            color: var(--primary-blue);
+        }
+
+        .security-layer.active {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Anomaly Alert */
+        .anomaly-alert {
+            background: rgba(228, 37, 39, 0.15);
+            border-left: 4px solid var(--primary-red);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(228, 37, 39, 0.2);
+        }
+
+        .anomaly-alert i {
+            font-size: 1.5rem;
+            color: var(--primary-red);
+        }
+
+        .anomaly-alert-content h4 {
+            color: var(--primary-red);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .anomaly-alert-content p {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        body.dark-mode .anomaly-alert-content p {
+            color: var(--text-light);
+        }
+
+        /* Data Actions */
+        .data-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .data-actions {
+            border-top: 1px solid var(--border-dark);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(246, 52, 88, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            background: #f63458;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(246, 52, 88, 0.5);
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-danger {
+            background: var(--primary-red);
+            color: white;
+            box-shadow: 0 4px 15px rgba(228, 37, 39, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-danger::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-danger:hover {
+            background: #D11F21;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(228, 37, 39, 0.5);
+        }
+
+        .btn-danger:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 1px solid var(--primary-blue);
+            backdrop-filter: blur(5px);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(246, 52, 88, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(246, 52, 88, 0.2);
+        }
+
+        body.dark-mode .btn-outline:hover {
+            background: rgba(246, 52, 88, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .sidebar.collapsed {
+                transform: translateX(-100%);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .top-bar {
+                left: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .data-details-content {
+                padding: 20px;
+            }
+            .data-details-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .data-details-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .data-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Menu Toggle Button (for mobile) */
+        .menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            font-size: 1.4rem;
+            color: var(--text-dark);
+            cursor: pointer;
+            margin-right: 15px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .menu-toggle {
+            background: rgba(40, 40, 40, 0.7);
+            color: var(--text-light);
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .menu-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(246, 52, 88, 0.2);
+            color: var(--primary-blue);
+        }
+
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Quantum Particle Background -->
+    <div class="quantum-bg" id="quantum-bg"></div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='img/CryptonZT - light.png') }}" alt="Q-Defender Logo" class="sidebar-logo">
+                <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="Q-Defender Logo" class="sidebar-logo-dark">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-menu">
+                <a href="/" class="menu-item">
+                    <i class="fas fa-lock"></i>
+                    <span class="menu-text">Secure Data</span>
+                    <span class="menu-tooltip">Secure Data</span>
+                </a>
+                
+                <a href="/managedata" class="menu-item active">
+                    <i class="fas fa-database"></i>
+                    <span class="menu-text">Manage Data</span>
+                    <span class="menu-tooltip">Manage Data</span>
+                </a>
+                
+                <a href="/" class="menu-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span class="menu-text">Security</span>
+                    <span class="menu-tooltip">Security</span>
+                </a>
+                
+                <a href="/account_settings" class="menu-item">
+                    <i class="fas fa-cog"></i>
+                    <span class="menu-text">Settings</span>
+                    <span class="menu-tooltip">Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <button class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <a href="/" class="breadcrumb-item">Home</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <a href="/managedata" class="breadcrumb-item">Manage Data</a>
+                        <span class="breadcrumb-separator">/</span>
+                        <a href="#" class="breadcrumb-item">Data Details</a>
+                    </div>
+                </div>
+                
+                <div class="top-bar-right">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    
+                    <div class="user-profile">
+                        {% if picture %}
+                            <img src="{{ picture }}" alt="User" class="user-img">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='img/user-default.png') }}" alt="User" class="user-img">
+                        {% endif %}
+                        <div class="user-menu">
+                            <a href="/my_profile" class="user-menu-item">
+                                <i class="fas fa-user"></i>
+                                My Profile
+                            </a>
+                            <a href="/account_settings" class="user-menu-item">
+                                <i class="fas fa-cog"></i>
+                                Account Settings
+                            </a>
+                            <a href="/logout" class="user-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Data Details Content -->
+            <div class="data-details-content">
+                <div class="data-details-header">
+                    <h1 class="data-details-title">Data Details</h1>
+                    <a href="/managedata" class="back-btn">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Data
+                    </a>
+                </div>
+
+                <div class="data-details-container">
+                    <!-- Basic Information Card -->
+                    <div class="data-details-card">
+                        <div class="data-details-card-header">
+                            <h2 class="data-details-card-title">Basic Information</h2>
+                            <div class="data-status status-{{ data.status.lower() }}">
+                                {{ data.status }}
+                            </div>
+                        </div>
+                        
+                        <div class="data-details-grid">
+                           
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">File Name</span>
+                                <span class="data-detail-value">{{ data.meta_data }}</span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">File Type</span>
+                                <span class="data-detail-value file-icon">
+                                    <span class="file-icon-bg">
+                                        {% if data.data_format.lower() == 'pdf' %}
+                                            <i class="fas fa-file-pdf"></i>
+                                        {% elif data.data_format.lower() in ['jpg', 'png', 'gif'] %}
+                                            <i class="fas fa-file-image"></i>
+                                        {% elif data.data_format.lower() == 'docx' %}
+                                            <i class="fas fa-file-word"></i>
+                                        {% elif data.data_format.lower() == 'xlsx' %}
+                                            <i class="fas fa-file-excel"></i>
+                                        {% elif data.data_format.lower() == 'csv' %}
+                                            <i class="fas fa-file-csv"></i>
+                                        {% elif data.data_format.lower() == 'json' %}
+                                            <i class="fas fa-file-code"></i>
+                                        {% elif data.data_format.lower() == 'zip' %}
+                                            <i class="fas fa-file-archive"></i>
+                                        {% elif data.data_format.lower() == 'eml' %}
+                                            <i class="fas fa-envelope"></i>
+                                        {% else %}
+                                            <i class="fas fa-file-alt"></i>
+                                        {% endif %}
+                                    </span>
+                                    {{ data.data_format.upper() }}
+                                </span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">File Size</span>
+                                <span class="data-detail-value">
+                                    {% if data.file_size_mb %}
+                                        {{ "%.2f"|format(data.file_size_mb) }} MB
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Encrypted At</span>
+                                <span class="data-detail-value">{{ data.encrypted_at }}</span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">User ID</span>
+                                <span class="data-detail-value">{{ data.user_id }}</span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Large File</span>
+                                <span class="data-detail-value">
+                                    {% if data.large_file %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Information Card -->
+                    <div class="data-details-card">
+                        <div class="data-details-card-header">
+                            <h2 class="data-details-card-title">Security Information</h2>
+                        </div>
+                        
+                        <div class="data-details-grid">
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Encryption Layers</span>
+                                <span class="data-detail-value">{{ data.layers }}</span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Position Size Encrypted</span>
+                                <span class="data-detail-value">
+                                    {% if data.position_size_enc_data_added %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Decoy Attached</span>
+                                <span class="data-detail-value">
+                                    {% if data.decoy_attached %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Anomaly Detected</span>
+                                <span class="data-detail-value">
+                                    {% if data.anomaly_detected %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </span>
+                            </div>
+                            
+                            {% if data.anomaly_detected %}
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Anomaly Detected At</span>
+                                <span class="data-detail-value">{{ data.anomaly_detected_at }}</span>
+                            </div>
+                            
+                            <div class="data-detail-item">
+                                <span class="data-detail-label">Anomaly Triggered</span>
+                                <span class="data-detail-value">
+                                    {% if data.anomaly_triggered %}
+                                        Yes
+                                    {% else %}
+                                        No
+                                    {% endif %}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Security Visualization -->
+                        <div class="security-visualization">
+                            <div class="security-layers">
+                                {% for i in range(1, data.layers + 1) %}
+                                <div class="security-layer {% if i == data.layers %}active{% endif %}">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        {% if data.anomaly_detected %}
+                        <div class="anomaly-alert">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="anomaly-alert-content">
+                                <h4>SECURITY ALERT</h4>
+                                <p>Anomaly detected in this data file. Please review and take appropriate action.</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="data-actions">
+                    <a href="/decryption" class="btn btn-primary">
+                        <i class="fas fa-unlock"></i> Decrypt Data
+                    </a>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                    <button class="btn btn-danger" onclick="confirmDelete('{{ data.data_id }}', '{{ data.meta_data }}')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create quantum particles for background
+            function createParticles() {
+                const bg = document.getElementById('quantum-bg');
+                const particleCount = window.innerWidth < 768 ? 30 : 60;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('quantum-particle');
+                    
+                    // Random position
+                    const posX = Math.random() * 100;
+                    const posY = Math.random() * 100 + 100;
+                    
+                    // Random size
+                    const size = Math.random() * 3 + 1;
+                    
+                    // Random animation
+                    const duration = Math.random() * 15 + 15;
+                    const delay = Math.random() * -30;
+                    
+                    particle.style.left = `${posX}vw`;
+                    particle.style.top = `${posY}vh`;
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.animationDuration = `${duration}s`;
+                    particle.style.animationDelay = `${delay}s`;
+                    
+                    // Random color variation
+                    const hue = Math.random() * 30 + 200; // Blue hues
+                    particle.style.backgroundColor = `hsla(${hue}, 80%, 60%, ${Math.random() * 0.4 + 0.2})`;
+                    
+                    bg.appendChild(particle);
+                }
+            }
+            
+            // Initialize particles
+            createParticles();
+    
+            // Theme Toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            const body = document.body;
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-mode');
+                const isDark = body.classList.contains('dark-mode');
+                
+                if (isDark) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+    
+            // Sidebar Toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            // Check for saved sidebar state
+            const savedSidebarState = localStorage.getItem('sidebar-collapsed');
+            if (savedSidebarState === 'true') {
+                sidebar.classList.add('collapsed');
+                sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            }
+            
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    sidebarToggle.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                    localStorage.setItem('sidebar-collapsed', 'true');
+                } else {
+                    sidebarToggle.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                    localStorage.setItem('sidebar-collapsed', 'false');
+                }
+            });
+    
+            // Mobile Menu Toggle
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+
+            // User profile dropdown
+            const userProfile = document.querySelector('.user-profile');
+            
+            userProfile.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!userProfile.contains(e.target)) {
+                    userProfile.classList.remove('active');
+                }
+            });
+
+            // Delete Confirmation Modal
+            const deleteModal = document.getElementById('delete-modal');
+            const cancelDeleteBtn = document.getElementById('cancel-delete');
+            const confirmDeleteBtn = document.getElementById('confirm-delete');
+            const deleteMessage = document.getElementById('delete-message');
+            const deleteMessageText = document.getElementById('delete-message-text');
+            let currentDeleteDataId = null;
+
+            // Global function to open delete modal
+            window.confirmDelete = function(dataId, dataName) {
+                currentDeleteDataId = dataId;
+                deleteMessage.textContent = `Delete "${dataName}"`;
+                deleteMessageText.textContent = `Are you sure you want to delete "${dataName}"?`;
+                deleteModal.classList.add('active');
+            };
+
+            function hideDeleteModal() {
+                deleteModal.classList.remove('active');
+            }
+
+            cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+
+            confirmDeleteBtn.addEventListener('click', () => {
+                // Show loading state
+                confirmDeleteBtn.disabled = true;
+                confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                
+                fetch(`/delete-data/${currentDeleteDataId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Redirect back to manage data page after successful deletion
+                        window.location.href = '/managedata';
+                    } else {
+                        throw new Error(data.error || 'Unknown error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert(`Error deleting data: ${error.message}`);
+                    confirmDeleteBtn.disabled = false;
+                    confirmDeleteBtn.innerHTML = 'Delete Permanently';
+                });
+            });
+
+            // Close delete modal when clicking outside
+            deleteModal.addEventListener('click', (e) => {
+                if (e.target === deleteModal) {
+                    hideDeleteModal();
+                }
+            });
+
+            // Create audio context for sound effects
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            function playDeleteSound() {
+                try {
+                    // Create oscillator for the sound
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // A4 note
+                    oscillator.frequency.exponentialRampToValueAtTime(1, audioContext.currentTime + 0.5); // Quick fade out
+                    
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                    
+                    // Add a subtle click sound
+                    const clickTime = audioContext.currentTime + 0.1;
+                    const clickOsc = audioContext.createOscillator();
+                    const clickGain = audioContext.createGain();
+                    
+                    clickOsc.type = 'square';
+                    clickOsc.frequency.setValueAtTime(2000, clickTime);
+                    clickOsc.frequency.exponentialRampToValueAtTime(1, clickTime + 0.05);
+                    
+                    clickGain.gain.setValueAtTime(0.5, clickTime);
+                    clickGain.gain.exponentialRampToValueAtTime(0.001, clickTime + 0.05);
+                    
+                    clickOsc.connect(clickGain);
+                    clickGain.connect(audioContext.destination);
+                    
+                    clickOsc.start(clickTime);
+                    clickOsc.stop(clickTime + 0.05);
+                    
+                } catch (e) {
+                    console.warn('Audio could not be played:', e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

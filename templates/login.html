@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptonZT | Secure Login</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f63458;
+            --primary-dark: #e42527;
+            --accent: #ff4366;
+            --bg: #0f0f12;
+            --bg-light: #1a1a1f;
+            --text: #f0f0f0;
+            --text-secondary: #b0b0b0;
+            --glass-bg: rgba(30, 30, 35, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.05);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(246, 52, 88, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(100, 100, 255, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism base styles */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: var(--transition);
+        }
+
+        /* Left Side - Visual Section */
+        .login-left {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(246, 52, 88, 0.1) 0%, transparent 70%);
+        }
+
+        .login-visual {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .login-logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+
+        .security-animation {
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .core {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent 70%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s infinite alternate;
+            box-shadow: 0 0 30px rgba(246, 52, 88, 0.5);
+            z-index: 2;
+        }
+
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(246, 52, 88, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        .ring-1 {
+            width: 150px;
+            height: 150px;
+        }
+
+        .ring-2 {
+            width: 220px;
+            height: 220px;
+            animation-delay: -5s;
+        }
+
+        .ring-3 {
+            width: 300px;
+            height: 300px;
+            animation-delay: -10s;
+        }
+
+        .login-left h1 {
+            font-size: 2.5rem;
+            margin: 1.5rem 0;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-left h1 span {
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-left p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Right Side - Login Form */
+        .login-right {
+            width: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+            background: rgba(15, 15, 18, 0.8);
+            backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .login-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .login-form {
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(246, 52, 88, 0.2);
+            outline: none;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 38px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .password-toggle:hover {
+            color: var(--text);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary), var(--primary-dark));
+            color: white;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 20px rgba(246, 52, 88, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(246, 52, 88, 0.4);
+        }
+
+        .btn-google {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1.5rem 0;
+        }
+
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .btn-google i {
+            color: var(--accent);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            color: var(--text-secondary);
+            position: relative;
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .login-footer a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(246, 52, 88, 0.3);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 40px rgba(246, 52, 88, 0.5);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating Particles */
+        .floating-particle {
+            position: absolute;
+            background-color: rgba(246, 52, 88, 0.1);
+            border-radius: 50%;
+            animation: float-particle 15s infinite linear;
+            backdrop-filter: blur(2px);
+            z-index: 1;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .login-left {
+                display: none;
+            }
+            
+            .login-right {
+                width: 100%;
+                max-width: 500px;
+                margin: 2rem auto;
+                border-left: none;
+                border-radius: 16px;
+                background: rgba(15, 15, 18, 0.9);
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-right {
+                padding: 2rem;
+            }
+            
+            .login-header h2 {
+                font-size: 1.8rem;
+            }
+            
+            .security-animation {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .ring-3 {
+                width: 250px;
+                height: 250px;
+            }
+        }
+        .logo-img {
+            height: 50px; 
+            width: auto;
+            transition: var(--transition);
+        }
+        /* Logo Styles */
+        .login-logo {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .form-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-logo img {
+            height: 36px;
+            width: auto;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Left Side - Visual Section -->
+    <div class="login-left">
+        <div class="login-visual">
+            <div class="login-logo">
+                <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo" class="logo-img">
+            </div>
+            <div class="security-animation">
+                <div class="core"></div>
+                <div class="ring ring-1"></div>
+                <div class="ring ring-2"></div>
+                <div class="ring ring-3"></div>
+            </div>
+            <h1>Secure Your <span>Quantum Future</span></h1>
+            <p>Protect your data with our multi-layered quantum-resistant encryption system.</p>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-right">
+        <div class="form-logo">
+            <img src="{{ url_for('static', filename='img/CryptonZT  - dark.png') }}" alt="CryptonZT Logo">
+        </div>
+        <div class="login-header">
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your CryptonZT dashboard</p>
+        </div>
+
+        <form class="login-form" action="/login" method="POST">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+            </button>
+
+            <div class="divider">or </div>
+
+            <a href="/login/google">
+                <button type="button" class="btn btn-google">
+                    <i class="fab fa-google"></i> Continue with Google
+                </button>
+            </a>
+
+            <div class="login-footer">
+                Don't have an account? <a href="/signup">Sign up</a><br>
+                <a href="/forgot-password">Forgot password?</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.querySelector('.login-left');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('floating-particle');
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                
+                // Random size
+                const size = Math.random() * 8 + 4;
+                
+                // Random animation
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * -20;
+                const opacity = Math.random() * 0.2 + 0.1;
+                
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.opacity = opacity;
+                particle.style.backdropFilter = `blur(${Math.random() * 3 + 1}px)`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Toggle password visibility
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Initialize particles when page loads
+        window.addEventListener('load', function() {
+            createParticles();
+            
+            // Add slight delay to form elements for staggered animation
+            document.querySelectorAll('.form-group').forEach((el, i) => {
+                el.style.animationDelay = `${0.3 + (i * 0.1)}s`;
+            });
+        });
+    </script>
+</body>
+</html>
