@@ -4,7 +4,7 @@
 
 ![CryptonZT Cover](https://i.ibb.co/JWH1vTcq/Title-Slide.png)
 
-### 🛡️ **Quantum-Resistant Key & Data Protection Layer for Web3** 🔐
+### **Quantum-Resistant Key & Data Protection Layer for Web3** 🔐
 
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/SURIYAPRASAAD04/CryptonZT)
 [![Demo](https://img.shields.io/badge/YouTube-Demo-red?style=for-the-badge&logo=youtube)](https://youtu.be/aYYoM2eZA-Q)
@@ -19,39 +19,39 @@
 
 ---
 
-## 🚨 **The Quantum Threat is Real**
+## **The Quantum Threat is Real**
 
 Current blockchain cryptography (ECDSA, RSA, EdDSA, ECDH) faces an **existential threat** from quantum computing. Algorithms like **Shor's** and **Grover's** will eventually:
 
-- 🔓 **Crack private keys** in minutes instead of millennia
-- 💸 **Compromise wallets** and steal digital assets
-- 🏗️ **Break smart contracts** and DeFi protocols
-- 🌐 **Undermine Web3** infrastructure security
+-  **Crack private keys** in minutes instead of millennia
+-  **Compromise wallets** and steal digital assets
+-  **Break smart contracts** and DeFi protocols
+-  **Undermine Web3** infrastructure security
 
 **We cannot wait for the first quantum breach — security must evolve NOW.**
 
 ---
 
-## ✅ **The CryptonZT Solution**
+##  **The CryptonZT Solution**
 
 <div align="center">
 
-### 🛡️ **Multi-Layered Quantum Defense**
+###  **Multi-Layered Quantum Defense**
 
 </div>
 
 CryptonZT provides comprehensive protection through:
 
-### 🔐 **Core Features**
+### **Core Features**
 
-- **🔒 Multi-layer PQC KEM Protection** - NIST-approved post-quantum algorithms
-- **🤖 ML-powered Anomaly Detection** - Real-time threat monitoring
-- **🚫 Zero-trust Architecture** - No endpoint is inherently trusted
-- **🆘 Emergency Escape Mechanism** - Automatic key re-encapsulation on breach
-- **⛓️ Blockchain Integration** - On-chain quantum-resilient verification
-- **🔄 Dynamic Key Fragmentation** - Distributed security with decoy generation
+- ** Multi-layer PQC KEM Protection** - NIST-approved post-quantum algorithms
+- ** ML-powered Anomaly Detection** - Real-time threat monitoring
+- ** Zero-trust Architecture** - No endpoint is inherently trusted
+- ** Emergency Escape Mechanism** - Automatic key re-encapsulation on breach
+- ** Blockchain Integration** - On-chain quantum-resilient verification
+- ** Dynamic Key Fragmentation** - Distributed security with decoy generation
 
-### 🎯 **Key Benefits**
+###  **Key Benefits**
 
 | Feature | Traditional Security | CryptonZT |
 |---------|---------------------|-----------|
@@ -76,35 +76,35 @@ CryptonZT provides comprehensive protection through:
 
 </div>
 
-### 📋 **Detailed Stack**
+###  **Detailed Stack**
 
 **Backend & API**
-- 🐍 **Flask (Python)** - Lightweight, scalable API framework
-- 🔄 **RESTful Architecture** - Clean, standardized endpoints
+-  **Flask (Python)** - Lightweight, scalable API framework
+-  **RESTful Architecture** - Clean, standardized endpoints
 
 **Database Layer**
-- 🍃 **MongoDB (Primary)** - High-performance document storage
-- 🔥 **Firebase (Backup)** - Cloud-native redundancy
+-  **MongoDB (Primary)** - High-performance document storage
+-  **Firebase (Backup)** - Cloud-native redundancy
 
 **Cryptographic Core**
-- 🔐 **NIST PQC Algorithms** - Kyber, Dilithium, SPHINCS+
-- 🛡️ **Custom KEM Implementation** - Multi-layer encapsulation
+-  **NIST PQC Algorithms** - Kyber, Dilithium, SPHINCS+
+-  **Custom KEM Implementation** - Multi-layer encapsulation
 
 **Machine Learning**
-- 🧠 **Scikit-learn** - Classical ML anomaly detection
-- 🤖 **TensorFlow** - Advanced neural network models
+-  **Scikit-learn** - Classical ML anomaly detection
+-  **TensorFlow** - Advanced neural network models
 
 **Blockchain Integration**
-- ⛓️ **Web3.py** - Ethereum ecosystem integration
-- 🧪 **Ganache/Sepolia** - Development and testing networks
+-  **Web3.py** - Ethereum ecosystem integration
+-  **Ganache/Sepolia** - Development and testing networks
 
 **DevOps & Deployment**
-- 🐳 **Docker** - Containerized services
-- ☁️ **Cloud-Ready** - Multi-platform deployment
+-  **Docker** - Containerized services
+-  **Cloud-Ready** - Multi-platform deployment
 
 ---
 
-## 🔄 **System Workflow**
+##  **System Workflow**
 
 <div align="center">
 
@@ -126,144 +126,62 @@ graph TD
 
 </div>
 
-### 📝 **Step-by-Step Process**
+###  **Step-by-Step Process**
 
-1. **📤 Data Upload** - User submits sensitive data (files, text, JSON, keys)
-2. **🔄 Processing** - Data converted to secure byte format
-3. **🔒 Encryption** - AES encryption with quantum-safe parameters
-4. **🛡️ PQC Protection** - Multi-layer key encapsulation mechanism
-5. **💾 Secure Storage** - Encrypted data stored in MongoDB
-6. **👁️ Monitoring** - ML algorithms continuously monitor for anomalies
-7. **🚨 Threat Response** - Automatic security escalation on detection
-8. **⛓️ Blockchain Proof** - Optional on-chain verification for transparency
+1. ** Data Upload** - User submits sensitive data (files, text, JSON, keys)
+2. ** Processing** - Data converted to secure byte format
+3. ** Encryption** - AES encryption with quantum-safe parameters
+4. ** PQC Protection** - Multi-layer key encapsulation mechanism
+5. ** Secure Storage** - Encrypted data stored in MongoDB
+6. ** Monitoring** - ML algorithms continuously monitor for anomalies
+7. ** Threat Response** - Automatic security escalation on detection
+8. **⛓ Blockchain Proof** - Optional on-chain verification for transparency
 
 ---
 
-## 📸 **Project Screenshots**
+##  **Project Screenshots**
 
 <div align="center">
 
-### 🏠 **Dashboard Overview**
 ![Dashboard](https://i.ibb.co/bRBqfR8X/Screenshot-2025-08-10-143734.png)
 
-### 🔐 **Encryption Interface**  
 ![Encryption](https://i.ibb.co/99S06Cwx/Screenshot-2025-08-10-143759.png)
 
-### 📊 **Security Analytics**
 ![Analytics](https://i.ibb.co/F4VcS6dD/Screenshot-2025-08-10-143851.png)
 
-### ⚙️ **System Configuration**
 ![Configuration](https://i.ibb.co/PzmCLG44/Screenshot-2025-08-10-143921.png)
 
-### 📈 **Performance Metrics**
 ![Metrics](https://i.ibb.co/PsXxmsNY/Screenshot-2025-08-10-143946.png)
 
 </div>
 
 ---
 
-## 🚀 **Quick Start Guide**
 
-### 📋 **Prerequisites**
-
-- Python 3.8+
-- MongoDB 4.4+
-- Node.js 14+ (for Web3 testing)
-- Git
-
-### 🔧 **Installation**
-
-```bash
-# Clone the repository
-git clone https://github.com/SURIYAPRASAAD04/CryptonZT.git
-cd CryptonZT
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Configure environment variables
-cp .env.example .env
-# Edit .env with your configuration
-```
-
-### 🏃‍♂️ **Running the Application**
+###  **Running the Application**
 
 ```bash
 # Start MongoDB service
 sudo systemctl start mongod
 
 # Run the Flask backend
-python app.py
+python Blockchain.py
 
 # Access the application
 # Open browser: http://localhost:5000
 ```
 
-### 🧪 **Testing with Web3**
 
-```bash
-# Install Ganache CLI
-npm install -g ganache-cli
-
-# Start local blockchain
-ganache-cli
-
-# Run Web3 integration tests
-python tests/test_web3_integration.py
-```
-
----
-
-## 📚 **API Documentation**
-
-### 🔐 **Encryption Endpoint**
-
-```http
-POST /api/encrypt
-Content-Type: application/json
-
-{
-  "data": "sensitive_information",
-  "type": "text|file|json",
-  "pqc_layers": 4
-}
-```
-
-### 🔓 **Decryption Endpoint**
-
-```http
-POST /api/decrypt
-Content-Type: application/json
-
-{
-  "encrypted_id": "unique_identifier",
-  "access_key": "user_access_key"
-}
-```
-
-### 📊 **Anomaly Status**
-
-```http
-GET /api/security/status
-Authorization: Bearer <token>
-```
-
----
-
-## 🎥 **Video Resources**
+##  **Video Resources**
 
 <div align="center">
 
-### 🎬 **Watch Our Demo**
-[![CryptonZT Demo](https://img.youtube.com/vi/aYYoM2eZA-Q/maxresdefault.jpg)](https://youtu.be/aYYoM2eZA-Q)
+###  **Watch Our Demo**
+[![CryptonZT Demo](https://img.youtube.com/vi/aYYoM2eZA-Q/maxresdefault.jpg)](https://youtu.be/vZifeU7olus)
 
 *Click above to see CryptonZT in action!*
 
-### 🚀 **Product Launch Presentation**
+###  **Product Launch Presentation**
 [![Product Launch](https://img.youtube.com/vi/5gms7-lGBYY/maxresdefault.jpg)](https://youtu.be/5gms7-lGBYY)
 
 *Complete product overview and technical deep-dive*
@@ -272,14 +190,14 @@ Authorization: Bearer <token>
 
 ---
 
-## 🏆 **Hackathon Journey**
+##  **Hackathon Journey**
 
-### 💡 **Pre-existing Foundation**
+###  **Pre-existing Foundation**
 - Core PQC + zero-trust architecture concept
 - Initial ML anomaly detection research
 - Theoretical framework development
 
-### 🔨 **Built During Hackathon**
+###  **Built During Hackathon**
 - ✅ Complete Flask backend with PQC integration
 - ✅ Comprehensive API endpoints for encryption
 - ✅ Full blockchain module for Web3 integration  
@@ -287,14 +205,14 @@ Authorization: Bearer <token>
 - ✅ Real-time dashboard and monitoring system
 - ✅ Docker containerization and deployment
 
-### 🎯 **Achievements**
-- 🏅 **Innovation in Security** - Novel multi-layer PQC approach
-- 🏅 **Technical Excellence** - Production-ready codebase
-- 🏅 **Practical Impact** - Addresses real quantum threat
+###  **Achievements**
+-  **Innovation in Security** - Novel multi-layer PQC approach
+-  **Technical Excellence** - Production-ready codebase
+-  **Practical Impact** - Addresses real quantum threat
 
 ---
 
-## 🤝 **Contributing**
+##  **Contributing**
 
 We welcome contributions to CryptonZT! Here's how you can help:
 
@@ -305,7 +223,7 @@ We welcome contributions to CryptonZT! Here's how you can help:
 - Performance optimization
 - Security auditing
 
-### 📝 **Contribution Process**
+###  **Contribution Process**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -315,15 +233,9 @@ We welcome contributions to CryptonZT! Here's how you can help:
 
 ---
 
-## 📄 **License & Usage**
 
-**MIT License** - Open for research and non-commercial use.
 
-For commercial licensing and enterprise deployment, please contact our team.
-
----
-
-## 📞 **Contact & Support**
+## **Contact & Support**
 
 <div align="center">
 
@@ -332,7 +244,7 @@ For commercial licensing and enterprise deployment, please contact our team.
 [![GitHub](https://img.shields.io/badge/GitHub-SURIYAPRASAAD04-black?style=for-the-badge&logo=github)](https://github.com/SURIYAPRASAAD04/CryptonZT)
 [![Documentation](https://img.shields.io/badge/Full%20Documentation-Google%20Drive-blue?style=for-the-badge&logo=googledrive)](https://drive.google.com/drive/folders/1BUPTkQP4TEwCYBLkbnCF-9j_94_uMP8G?usp=sharing)
 
-### 🌟 **Show Your Support**
+### **Show Your Support**
 
 If CryptonZT helps secure your Web3 future, please ⭐ **star this repository**!
 
@@ -342,10 +254,11 @@ If CryptonZT helps secure your Web3 future, please ⭐ **star this repository**!
 
 <div align="center">
 
-### 🚀 **Securing Tomorrow's Digital World Today**
+###  **Securing Tomorrow's Digital World Today**
 
 **CryptonZT** - Because quantum-safe is the only safe.
 
 *Built with ❤️ for the quantum-resistant future*
 
 </div>
+
